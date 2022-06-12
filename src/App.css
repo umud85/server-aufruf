@@ -5,3 +5,8 @@ h1 {
 .mt-8 {
   margin-top: 2rem;
 }
+
+.u-container {
+  max-width: 960px;
+  margin: 0 auto;
+}

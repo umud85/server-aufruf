@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Zutaten from './components/Zutaten';
+import Search from './components/Search';
 
 function App() {
   const [gerichte, setGerichte] = useState([]);
+  const [searchItems, setSearchItems] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     const getGerichte = async () => {
@@ -17,11 +19,27 @@ function App() {
     }
     getGerichte();
   }, [])
+
+/*   useEffect(() => {
+    const result = gerichte.filter((gericht) => {
+      return gericht.zutaten;
+    })
+  }, [searchItems]) */
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSearchItems([...searchItems, inputValue]);
+  }
+
   return (
-    <div>
+    <div className='u-container'>
       <h1>Restegourmet</h1>
-      <ul>
-        {gerichte.map((gericht, index) => {
+      <Search handleSubmit={handleSubmit} handleChange={handleChange} />
+      {gerichte.map((gericht, index) => {
           return (
             <Card key={index} style={{ width: '18rem'}} className="mt-8">
               <Card.Img variant="top" src={`../../img/${index}.jpeg`} />
@@ -37,7 +55,6 @@ function App() {
             </Card>
           )
         })}
-      </ul>
     </div>
   )
 }
