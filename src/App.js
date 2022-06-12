@@ -6,25 +6,31 @@ import './App.css';
 import Zutaten from './components/Zutaten';
 import Search from './components/Search';
 
+const url = 'http://localhost:3001/';
+
 function App() {
   const [gerichte, setGerichte] = useState([]);
   const [searchItems, setSearchItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    const getGerichte = async () => {
-      const res = await fetch('http://localhost:3001/');
-      const json = await res.json();
-      setGerichte(json.gerichte);
-    }
-    getGerichte();
-  }, [])
+    (async () => {
+        const response = await fetch(url);
+        const _gerichte = await response.json();
+        console.log(_gerichte);
+        setGerichte(_gerichte);
+    })();
+}, []);
 
-/*   useEffect(() => {
-    const result = gerichte.filter((gericht) => {
-      return gericht.zutaten;
-    })
-  }, [searchItems]) */
+  useEffect(() => {
+    const result = gerichte.filter(gericht => {
+      const _zutaten = gericht.zutaten.map(zutat => zutat.zutat.toLowerCase());
+      if (_zutaten.includes(inputValue.toLowerCase())) {
+        return gericht;
+      }
+    });
+    setGerichte(result);
+  }, [searchItems]);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -33,6 +39,8 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchItems([...searchItems, inputValue]);
+    console.log(e.target.children[0].value);
+    return null;
   }
 
   return (

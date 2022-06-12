@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Search = ({handleSubmit, handleChange}) => {
   return (
     <Fragment>
-      <Form className="d-flex" onSubmit={handleSubmit}>
+      <Form className="d-flex" onSubmit={e => handleSubmit(e)}>
         <FormControl
           type="search"
           placeholder="Search"
